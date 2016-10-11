@@ -12,7 +12,7 @@ based on loan requests to multiple banks. The banking operations must be simulat
 solution as the project has its focus on integration solutions as opposed to being an exercise in
 consumer financial services.
 
-# Loan Broker Component
+## Loan Broker Component
 
 This is the Loan Broker design that you must implement:
 
@@ -90,6 +90,7 @@ The corresponding response will look like the following:
  <interestRate>4.5600000000000005</interestRate>
  <ssn>12345678</ssn>
 </LoanResponse>
+
 The bank at exchange cphbusiness.bankJSON is JSON based. Here is an example of its loan
 request format:
  {"ssn":1605789787,"creditScore":598,"loanAmount":10.0,"loanDuration":360}
