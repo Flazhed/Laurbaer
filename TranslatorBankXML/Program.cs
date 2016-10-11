@@ -10,6 +10,7 @@ namespace TranslatorBankXML
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
