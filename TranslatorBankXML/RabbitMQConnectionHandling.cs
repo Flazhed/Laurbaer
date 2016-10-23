@@ -18,7 +18,7 @@ namespace TranslatorBankXML
         {
             factory = new ConnectionFactory() { HostName = _Host_Name };
         }
-        public object readQueue()
+        public string readQueue()
         {
             string message = null;
             using (var connection = factory.CreateConnection())
@@ -47,9 +47,20 @@ namespace TranslatorBankXML
             return message;
         }
 
-        public void SendXMLToBankQueue(object XMLBankFormat)
+        public void SendXMLToBankQueue(string XMLBankFormat)
         {
+            var factory = new ConnectionFactory() { HostName = _Host_Name };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: _Queue_Name, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
+                string message = XMLBankFormat;
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(exchange: "", routingKey: "hello", basicProperties: null, body: body);
+                Console.WriteLine(" [x] Sent {0}", message);
+            }
         }
     }
 }
