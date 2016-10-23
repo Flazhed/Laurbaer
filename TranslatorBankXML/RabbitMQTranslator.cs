@@ -1,17 +1,25 @@
 ﻿using System;
-using RabbitMQ.Client;
+using System.Text;
 
 namespace TranslatorBankXML
 {
     public class RabbitMQTranslator
     {
+        private RabbitMQConnectionHandling RMQCon;
+    
         public RabbitMQTranslator()
         {
-
+            RMQCon = new RabbitMQConnectionHandling();
         }
         public void translate()
         {
-            throw new NotImplementedException();
+            var RecivedFormat = RMQCon.readQueue();
+            //do translation
+            var translatedformat = RecivedFormat;// do the translation here
+            RMQCon.SendXMLToBankQueue(translatedformat);
         }
+       
+       
     }
+
 }
