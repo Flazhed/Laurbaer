@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionLaurbaer", "Solutio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Normalizer", "Normalizer\Normalizer.csproj", "{4DE79B6C-A395-4657-AA28-B7A53167B32F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipList", "RecipList\RecipList.csproj", "{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4DE79B6C-A395-4657-AA28-B7A53167B32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE79B6C-A395-4657-AA28-B7A53167B32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE79B6C-A395-4657-AA28-B7A53167B32F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
