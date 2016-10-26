@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RabbitMQ.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace CreditScoreEnricher
     {
         static void Main(string[] args)
         {
-            new Enricher();
+            ConnectionFactory factory = new ConnectionFactoryBuilder().CreateConnectionFactory();
+            new Reciever().Recieve(factory);
         }
 
     }

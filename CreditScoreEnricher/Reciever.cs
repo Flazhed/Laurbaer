@@ -25,8 +25,12 @@ namespace CreditScoreEnricher
                     var body = ea.Body;
                     var message = Encoding.UTF8.GetString(body);
                     Console.WriteLine(" [x] Received {0}", message);
+                    message = Enricher.Enrich(message);
+                    new Sender().Send(factory, message);
                 };
                 channel.BasicConsume(queue: "helloper", noAck: true, consumer: consumer);
+
+                
 
                 Console.WriteLine(" Press [enter] to exit.");
                 Console.ReadLine();

@@ -10,18 +10,15 @@ namespace CreditScoreEnricher
 {
     public class Enricher
     {
-       public Enricher()
+
+
+
+        public static string Enrich(string message)
         {
-            ConnectionFactory factory = new ConnectionFactoryBuilder().CreateConnectionFactory();
-            //new Sender().Send(factory);
-            new Reciever().Recieve(factory);
-        }
-
-
-
-        private void Enrich()
-        {
-
+            //extract SSN
+            string ssn = "lel";
+            string creditscore = "Credit score: ";
+            return creditscore +  CreditBureau.GetCreditScore(ssn);
         }
 
 
