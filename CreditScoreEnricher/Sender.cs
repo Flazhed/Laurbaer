@@ -15,11 +15,11 @@ namespace CreditScoreEnricher
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "helloper", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                channel.QueueDeclare(queue: "helloper2", durable: false, exclusive: false, autoDelete: false, arguments: null);
                 
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: "", routingKey: "helloper", basicProperties: null, body: body);
+                channel.BasicPublish(exchange: "", routingKey: "helloper2", basicProperties: null, body: body);
                 Console.WriteLine(" [x] Sent {0}", message);
             }
 

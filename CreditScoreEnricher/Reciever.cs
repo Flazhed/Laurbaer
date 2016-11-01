@@ -14,9 +14,9 @@ namespace CreditScoreEnricher
         public void Recieve(ConnectionFactory factory)
         {
 
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
+            var connection = factory.CreateConnection();
+            var channel = connection.CreateModel();
+            
                 channel.QueueDeclare(queue: "helloper", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
                 var consumer = new EventingBasicConsumer(channel);
@@ -26,17 +26,16 @@ namespace CreditScoreEnricher
                     var message = Encoding.UTF8.GetString(body);
                     Console.WriteLine(" [x] Received {0}", message);
                     message = Enricher.Enrich(message);
+                    Console.WriteLine("Enriched");
                     new Sender().Send(factory, message);
+                    
                 };
                 channel.BasicConsume(queue: "helloper", noAck: true, consumer: consumer);
-
-                
-
-                Console.WriteLine(" Press [enter] to exit.");
-                Console.ReadLine();
-            }
+            
+            
 
         }
+
 
     }
 }
