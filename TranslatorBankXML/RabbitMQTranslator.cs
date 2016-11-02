@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -25,11 +26,11 @@ namespace TranslatorBankXML
         private string TransformMessage(string recivedFormat)
         {
             XMLBank.LoanRequest bankFormatLoanRequest = new XMLBank.LoanRequest();
-            LoanBroker.LoanRequest recivedFormatLoanRequest = ObjectFromXML<LoanBroker.LoanRequest>(recivedFormat);
+            LoanBroker.LoanRequest recivedFormatLoanRequest = ObjectFromJson<LoanBroker.LoanRequest>(recivedFormat);
             bankFormatLoanRequest.ssn = recivedFormatLoanRequest.ssn;
             bankFormatLoanRequest.creditScore = recivedFormatLoanRequest.creditScore;
             bankFormatLoanRequest.loanAmount = recivedFormatLoanRequest.loanAmount;
-            bankFormatLoanRequest.loanDuration = recivedFormatLoanRequest.loanDuration;
+            bankFormatLoanRequest.loanDuration = new DateTime(1970,1,1).AddMonths(recivedFormatLoanRequest.loanDuration);
             return GetXMLFromObject(bankFormatLoanRequest);
         }
 
@@ -88,6 +89,18 @@ namespace TranslatorBankXML
             }
             return sw.ToString();
         }
-    }
+        private T ObjectFromJson<T>(string message) where T : class
+        {
+            object objResponse;
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(T));
+            using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(message)))
+            {
+                objResponse = jsonSerializer.ReadObject(ms);
 
+            }
+            return objResponse as T;
+        }
+    }
+   
+    
 }
