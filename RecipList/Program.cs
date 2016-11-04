@@ -5,24 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 
+
 namespace RecipList
 {
     public class Program
     {
-        private Bank[] banks =
-        {
-            new Bank("DanskeBank", 10, 10, 10, "qName"),
-            new Bank("Nordea", 10, 10, 10, "qName"),
-            new Bank("JyskeBank", 10, 10, 10, "qName"),
-        };
-
         private readonly ConnectionFactory _factory;
-        private readonly BankService _bankService;
         private readonly MessageRouter _messageRouter;
         private readonly Worker _worker;
 
         public Program()
         {
+            Console.WriteLine("Init Recipient list");
             _factory = new ConnectionFactory
             {
                 HostName = Constants.Host,
@@ -31,13 +25,13 @@ namespace RecipList
                 Password = Constants.Password
             };
             _messageRouter = new MessageRouter(_factory);
-            _bankService = new BankService(banks);
-            _worker = new Worker(_factory, _messageRouter, _bankService);
+            _worker = new Worker(_factory, _messageRouter);
         }
 
         private void Run()
         {
-            _worker.CreateWorker();
+            _worker.CreateConsumer();
+            Console.WriteLine("Ready to receive");
         }
 
         static void Main(string[] args)
