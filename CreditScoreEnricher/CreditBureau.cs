@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreditScoreEnricher.CreditScoreClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,18 @@ namespace CreditScoreEnricher
 
         public static int GetCreditScore(string ssn)
         {
-            Random rand = new Random();
-            return rand.Next(0,800);
+            CreditScoreServiceClient creditScoreClient = new CreditScoreServiceClient();
+            int creditScore;
+            try
+            {
+                creditScore = creditScoreClient.creditScore(ssn);
+            }
+            catch(Exception e)
+            {
+                //we catching generic exception, team!
+                creditScore = 0;
+            }
+            return creditScore;
         }
 
     }

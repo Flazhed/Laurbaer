@@ -20,16 +20,6 @@ namespace CreditScoreEnricher
             string ssn = messageJObject.GetValue("ssn").ToString();
             messageJObject.Add("creditScore", CreditBureau.GetCreditScore(ssn));
 
-            //Slyngel Deluxe, ryk til ny enricher
-            JArray bankJArray = new JArray();
-            JObject bank1 = new JObject();
-            bank1.Add("bankName", "Bank1");
-            bank1.Add("translatorRoutingKey", "Morten plz");
-            bankJArray.Add(bank1);
-
-            messageJObject.Add("banks", bankJArray);
-            //
-
             return messageJObject.ToString();
         }
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionLaurbaer", "Solutio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditScoreEnricher", "CreditScoreEnricher\CreditScoreEnricher.csproj", "{C14CEBD8-F26C-4365-9729-60B6A1678E5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankEnricher", "BankEnricher\BankEnricher.csproj", "{D71C8281-B00B-464A-8889-47AABCD1419E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C14CEBD8-F26C-4365-9729-60B6A1678E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C14CEBD8-F26C-4365-9729-60B6A1678E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C14CEBD8-F26C-4365-9729-60B6A1678E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D71C8281-B00B-464A-8889-47AABCD1419E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D71C8281-B00B-464A-8889-47AABCD1419E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D71C8281-B00B-464A-8889-47AABCD1419E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D71C8281-B00B-464A-8889-47AABCD1419E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
