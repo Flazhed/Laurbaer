@@ -14,7 +14,7 @@ namespace CreditScoreEnricher
             ConnectionFactory factory = new ConnectionFactoryBuilder().CreateConnectionFactory();
             //new Sender().Send(factory, "laks");
             new Reciever().Recieve(factory);
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
     }

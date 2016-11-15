@@ -16,8 +16,12 @@ namespace CreditScoreEnricher
 
             var connection = factory.CreateConnection();
             var channel = connection.CreateModel();
-            
-                channel.QueueDeclare(queue: "helloper", durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            channel.ExchangeDeclare(exchange: Constants.DirectExchanceName, type: Constants.DirectExchanceType);
+
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(queue: queueName, exchange: Constants.DirectExchanceName, routingKey: Constants.DirectRoutingKeyReciever);
+
 
                 var consumer = new EventingBasicConsumer(channel);
                 consumer.Received += (model, ea) =>
@@ -30,7 +34,7 @@ namespace CreditScoreEnricher
                     new Sender().Send(factory, message);
                     
                 };
-                channel.BasicConsume(queue: "helloper", noAck: true, consumer: consumer);
+                channel.BasicConsume(queue: queueName, noAck: true, consumer: consumer);
             
             
 

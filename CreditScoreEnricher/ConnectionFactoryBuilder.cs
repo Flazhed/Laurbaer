@@ -12,7 +12,7 @@ namespace CreditScoreEnricher
 
         public ConnectionFactory CreateConnectionFactory()
         {
-            var factory = new ConnectionFactory() { HostName = "datdb.cphbusiness.dk", UserName = "student", Password = "cph" };
+            var factory = new ConnectionFactory() { HostName = Constants.Host, UserName = Constants.UserName, Password = Constants.Password };
             return factory;
         }
     }
