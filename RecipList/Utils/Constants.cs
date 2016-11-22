@@ -8,7 +8,7 @@
         public static string EnricherInRoutingKey = "bank_enriched";
 
 
-        public static string NormalizerOutRoutingKey = "guffe-luffe-muffe-snuffe";
+        public static string AggregatorOutRoutingKey = "aggOut";
 
 
         //public static string Host = "localhost";
