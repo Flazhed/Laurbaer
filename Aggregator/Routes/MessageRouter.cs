@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text;
+using Aggregator.Entity;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RecipList.Entity;
+using Aggregator.Utils;
 
-namespace RecipList
+namespace Aggregator.Routes
 {
     public class MessageRouter
     {
@@ -65,14 +66,14 @@ namespace RecipList
                 string jsonNormlizer = JsonConvert.SerializeObject(newLoanRequest, Formatting.Indented);
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 Console.WriteLine("[{0}] >> notify to {1}",
-                    DateTime.Now.ToString("HH:mm:ss"), Constants.AggregatorOutRoutingKey);
+                    DateTime.Now.ToString("HH:mm:ss"), "key");
 
                 channel.ExchangeDeclare(exchange: Constants.DirectExchangeName,
                     type: Constants.DirectExhangeType);
 
                 var body = Encoding.UTF8.GetBytes(jsonNormlizer);
                 channel.BasicPublish(exchange: Constants.DirectExchangeName,
-                    routingKey: Constants.AggregatorOutRoutingKey,
+                    routingKey: "key",
                     basicProperties: null,
                     body: body);
             }

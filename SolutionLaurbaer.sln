@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Normalizer", "Normalizer\No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipList", "RecipList\RecipList.csproj", "{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aggregator", "Aggregator\Aggregator.csproj", "{56BC27B8-3B64-40B5-A683-BA012AEA6893}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
