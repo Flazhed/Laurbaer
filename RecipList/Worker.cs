@@ -36,8 +36,8 @@ namespace RecipList
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("[{0}] << received on {1}",
-                    DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey);
+                Console.WriteLine("[{0}] << received on {1} - msg: {2}",
+                    DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey, message);
 
                 var loanRequest = JsonConvert.DeserializeObject<LoanRequest>(message);
 
