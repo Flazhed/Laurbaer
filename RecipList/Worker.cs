@@ -40,9 +40,9 @@ namespace RecipList
                     DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey, message);
 
                 var loanRequest = JsonConvert.DeserializeObject<LoanRequest>(message);
-
-                _messageRouter.NotifyNormalizer(loanRequest);
-                _messageRouter.SendToRecipientList(loanRequest);
+                var corrId = Guid.NewGuid().ToString();
+                _messageRouter.NotifyAggregator(loanRequest, corrId);
+                _messageRouter.SendToRecipientList(loanRequest, corrId);
             };
 
             channel.BasicConsume(queue: queueName,

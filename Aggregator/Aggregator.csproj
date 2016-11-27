@@ -51,13 +51,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankQuoteAggregate.cs" />
     <Compile Include="Entity\Bank.cs" />
+    <Compile Include="Entity\BankReply.cs" />
     <Compile Include="Entity\LoanRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routes\MessageRouter.cs" />
     <Compile Include="Utils\Constants.cs" />
-    <Compile Include="Worker.cs" />
+    <Compile Include="BankGateway.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

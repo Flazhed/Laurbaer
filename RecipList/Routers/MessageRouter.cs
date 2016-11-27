@@ -15,7 +15,7 @@ namespace RecipList
             _factory = factory;
         }
 
-        public void SendToRecipientList(LoanRequest loanRequest)
+        public void SendToRecipientList(LoanRequest loanRequest, string corrId)
         {
             using (var connection = _factory.CreateConnection())
             using (var channel = connection.CreateModel())
@@ -42,16 +42,19 @@ namespace RecipList
                     channel.ExchangeDeclare(exchange: Constants.DirectExchangeName,
                         type: Constants.DirectExhangeType);
 
+                    var props = channel.CreateBasicProperties();
+                    props.CorrelationId = corrId;
+                   
                     var body = Encoding.UTF8.GetBytes(jsonRecip);
                     channel.BasicPublish(exchange: Constants.DirectExchangeName,
                         routingKey: routingKey,
-                        basicProperties: null,
+                        basicProperties: props,
                         body: body);
                 }
             }
         }
 
-        public void NotifyNormalizer(LoanRequest loanRequest)
+        public void NotifyAggregator(LoanRequest loanRequest, string corrId)
         {
             using (var connection = _factory.CreateConnection())
             using (var channel = connection.CreateModel())
@@ -70,10 +73,13 @@ namespace RecipList
                 channel.ExchangeDeclare(exchange: Constants.DirectExchangeName,
                     type: Constants.DirectExhangeType);
 
+                var props = channel.CreateBasicProperties();
+                props.CorrelationId = corrId;
+
                 var body = Encoding.UTF8.GetBytes(jsonNormlizer);
                 channel.BasicPublish(exchange: Constants.DirectExchangeName,
                     routingKey: Constants.AggregatorOutRoutingKey,
-                    basicProperties: null,
+                    basicProperties: props,
                     body: body);
             }
         }
