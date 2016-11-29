@@ -15,12 +15,11 @@ namespace TranslatorBankXML
         {
             RMQCon = new RabbitMQConnectionHandling();
         }
-        public void translate()
+        public string Translate(string RecivedFormat)
         {
-            var RecivedFormat = RMQCon.readQueue();
-            //do translation
             var translatedformat = this.TransformMessage(RecivedFormat);// do the translation here
-            RMQCon.SendXMLToBankQueue(translatedformat);
+            //RMQCon.SendXMLToBankQueue(translatedformat);
+            return translatedformat;
         }
 
         private string TransformMessage(string recivedFormat)
