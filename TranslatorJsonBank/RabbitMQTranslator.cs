@@ -15,7 +15,7 @@ namespace TranslatorJsonBank
         {
            // RMQCon = new RabbitMQConnectionHandling();
         }
-        public string Translate(string RecivedFormat)
+        public string[] Translate(string RecivedFormat)
         {
             //var RecivedFormat = RMQCon.readQueue();
             //do translation
@@ -24,15 +24,16 @@ namespace TranslatorJsonBank
             return translatedformat;
         }
 
-        private string TransformMessage(string recivedFormat)
+        private string[] TransformMessage(string recivedFormat)
         {
             JsonBank.LoanRequest bankFormatLoanRequest = new JsonBank.LoanRequest();
             LoanBroker.LoanRequest recivedFormatLoanRequest = ObjectFromJson<LoanBroker.LoanRequest>(recivedFormat);
-            bankFormatLoanRequest.ssn = recivedFormatLoanRequest.ssn;
+            bankFormatLoanRequest.ssn = recivedFormatLoanRequest.ssn.Replace("-","");
             bankFormatLoanRequest.creditScore = recivedFormatLoanRequest.creditScore;
             bankFormatLoanRequest.loanAmount = recivedFormatLoanRequest.loanAmount;
             bankFormatLoanRequest.loanDuration = recivedFormatLoanRequest.loanDuration;
-            return GetJsonFromObject<JsonBank.LoanRequest>(bankFormatLoanRequest);
+            
+            return new string[]{ GetJsonFromObject<JsonBank.LoanRequest>(bankFormatLoanRequest), recivedFormatLoanRequest.bank.fanoutName };
         }
         private string GetJsonFromObject<T>(T o)
         {

@@ -9,36 +9,42 @@ namespace TranslatorBankXML
     class RabbitMQConnectionHandling
     {
         private ConnectionFactory factory;
-        private static string _BankXMLQueue_Name = "BankXML";
-        private static string _LoanRequestQueue_Name = "BlorQ";
         private static string _Host_Name = "datdb.cphbusiness.dk";
         private static string _Username = "student";
         private static string _Password = "cph";
+        private static string _directExchangeName = "laurbaer_direct";
+        private IConnection connection;
+        private IModel channel;
         public RabbitMQConnectionHandling()
         {
             factory = new ConnectionFactory() { HostName = _Host_Name, UserName =_Username, Password=_Password };
         }
+        public void OpenCon()
+        {
+            connection = factory.CreateConnection();
+            channel = connection.CreateModel();
+        }
+        public void CloseConn()
+        {
+            channel.Close();
+            channel.Dispose();
+            channel = null;
+            connection.Close();
+            connection.Dispose();
+            connection = null;
+        }
         public void StartReadQueue()
         {
-            using (var connection = factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: _LoanRequestQueue_Name,
-                                         durable: false,
-                                         exclusive: false,
-                                         autoDelete: false,
-                                         arguments: null);
-                    channel.QueueBind(queue: _LoanRequestQueue_Name, exchange: "BlorQex", routingKey: "BlorQ");
-                    var consumer = new EventingBasicConsumer(channel);
-                    consumer.Received += EventBasicConsumer_Recieved;
+            channel.ExchangeDeclare(exchange: _directExchangeName, type: "direct");
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(queue: queueName, exchange: _directExchangeName, routingKey: "laurbaer_xml_translator");
 
-                    channel.BasicConsume(queue: _LoanRequestQueue_Name,
-                                         noAck: true,
-                                         consumer: consumer);
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += EventBasicConsumer_Recieved;
 
-                }
-            }
+            channel.BasicConsume(queue: queueName,
+                                 noAck: true,
+                                 consumer: consumer);
         }
         private static void EventBasicConsumer_Recieved(object sender, BasicDeliverEventArgs e)
         {
@@ -46,28 +52,24 @@ namespace TranslatorBankXML
             string messageRecieved = Encoding.UTF8.GetString(e.Body);
             Console.WriteLine(" [x] Received {0}", messageRecieved);
 
-            string translatedFormat = aTranslator.Translate(messageRecieved);
-            SendXMLToBankQueue(translatedFormat, e);
-
-            Console.WriteLine(" [x] send {0}", translatedFormat);
-
-            Console.WriteLine(" Press [enter] to exit.");
-            Console.ReadLine();
-
+            string[] translatedFormat = aTranslator.Translate(messageRecieved);
+            SendXMLToBankQueue(translatedFormat[0], translatedFormat[1], e); 
+            
+            Console.WriteLine("exit? {yes/[no]}: ");
         }
-        public static void SendXMLToBankQueue(string XMLBankFormat,BasicDeliverEventArgs e)
+        public static void SendXMLToBankQueue(string XMLBankFormat, string exchangeName, BasicDeliverEventArgs e)
         {
             var factory = new ConnectionFactory() { HostName = _Host_Name };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: _BankXMLQueue_Name, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                channel.ExchangeDeclare(exchange: exchangeName, type: "fanout");
 
                 string message = XMLBankFormat;
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: "", routingKey: _BankXMLQueue_Name, basicProperties: null, body: body);
-                Console.WriteLine(" [x] Sent {0}", message);
+                channel.BasicPublish(exchange: exchangeName, routingKey: "", basicProperties: e.BasicProperties, body: body);
+                Console.WriteLine(" [x] Sent {0} with basicproperties : {1}", message, e.BasicProperties.ToString());
             }
         }
     }

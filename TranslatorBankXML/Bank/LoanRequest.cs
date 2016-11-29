@@ -9,6 +9,6 @@ namespace TranslatorBankXML.XMLBank
         public string ssn { get; set; }
         public int creditScore { get; set; }
         public float loanAmount { get; set; }
-        public DateTime loanDuration { get; set; }
+        public string loanDuration { get; set; }
     }
 }

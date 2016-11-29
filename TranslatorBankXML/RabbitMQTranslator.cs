@@ -9,28 +9,27 @@ namespace TranslatorBankXML
 {
     public class RabbitMQTranslator
     {
-        private RabbitMQConnectionHandling RMQCon;
     
         public RabbitMQTranslator()
         {
-            RMQCon = new RabbitMQConnectionHandling();
         }
-        public string Translate(string RecivedFormat)
+        public string[] Translate(string RecivedFormat)
         {
             var translatedformat = this.TransformMessage(RecivedFormat);// do the translation here
             //RMQCon.SendXMLToBankQueue(translatedformat);
             return translatedformat;
         }
 
-        private string TransformMessage(string recivedFormat)
+        private string[] TransformMessage(string recivedFormat)
         {
             XMLBank.LoanRequest bankFormatLoanRequest = new XMLBank.LoanRequest();
             LoanBroker.LoanRequest recivedFormatLoanRequest = ObjectFromJson<LoanBroker.LoanRequest>(recivedFormat);
-            bankFormatLoanRequest.ssn = recivedFormatLoanRequest.ssn;
+            bankFormatLoanRequest.ssn = recivedFormatLoanRequest.ssn.Replace("-","");
             bankFormatLoanRequest.creditScore = recivedFormatLoanRequest.creditScore;
             bankFormatLoanRequest.loanAmount = recivedFormatLoanRequest.loanAmount;
-            bankFormatLoanRequest.loanDuration = new DateTime(1970,1,1).AddMonths(recivedFormatLoanRequest.loanDuration);
-            return GetXMLFromObject(bankFormatLoanRequest);
+            bankFormatLoanRequest.loanDuration = new DateTime(1970,1,1).AddMonths(recivedFormatLoanRequest.loanDuration).ToString("yyyy-dd-MM HH:mm:ss CET");
+            return  new string[] { GetXMLFromObject(bankFormatLoanRequest), recivedFormatLoanRequest.bank.fanoutName };
+            ;
         }
 
         private T ObjectFromXML<T>(string xml)

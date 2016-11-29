@@ -11,9 +11,10 @@ namespace TranslatorJsonBank
         static void Main(string[] args)
         {
             bool running = true;
+            RabbitMQConnectionHandling conn = new RabbitMQConnectionHandling();
+            conn.OpenCon();
             while (running)
             {
-                RabbitMQConnectionHandling conn = new RabbitMQConnectionHandling();
                 conn.StartReadQueue();
                 Console.WriteLine("exit? {yes/[no]}: ");
                 string exitkeys = Console.ReadLine();
@@ -22,6 +23,7 @@ namespace TranslatorJsonBank
                     running = false;
                 }
             }
+            conn.CloseConn();
         }
     }
 }
