@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace TranslatorBankXML
 {
-    public class RabbitMQTranslator
+    public class RabbitMQTranslator : IRabbitMQTranslator
     {
     
         public RabbitMQTranslator()

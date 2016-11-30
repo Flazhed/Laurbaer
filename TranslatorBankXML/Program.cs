@@ -11,7 +11,7 @@ namespace TranslatorBankXML
             conn.OpenCon();
             while (running)
             {
-                conn.StartReadQueue();
+                conn.ReadQueue();
                 Console.WriteLine("exit? {yes/[no]}: ");
                 string exitkeys = Console.ReadLine();
                 if (exitkeys.Equals("yes"))

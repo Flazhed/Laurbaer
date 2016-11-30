@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace TranslatorJsonBank
 {
-    public class RabbitMQTranslator
+    public class RabbitMQTranslator:IRabbitMQTranslator
     {
         //private RabbitMQConnectionHandling RMQCon;
 

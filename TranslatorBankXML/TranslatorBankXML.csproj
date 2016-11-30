@@ -64,11 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bank\LoanRequest.cs" />
+    <Compile Include="IRabbitMQTranslator.cs" />
     <Compile Include="LoanBroker\LoanRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabbitMQConnectionHandling.cs" />
     <Compile Include="RabbitMQTranslator.cs" />
+    <Compile Include="StaticHardcodedVariables.cs" />
+    <Compile Include="TranslatorFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
