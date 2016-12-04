@@ -27,8 +27,8 @@ namespace RecipList
 
             channel.ExchangeDeclare(exchange: Constants.DirectExchangeName, type: Constants.DirectExhangeType);
             var queueName = channel.QueueDeclare().QueueName;
-            channel.QueueBind(queue: queueName, exchange: Constants.DirectExchangeName,
-                routingKey: Constants.EnricherInRoutingKey);
+            Console.WriteLine(queueName);
+            channel.QueueBind(queue: queueName, exchange: Constants.DirectExchangeName, routingKey: Constants.EnricherInRoutingKey);
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>

@@ -36,14 +36,16 @@ namespace RecipList
                     string jsonRecip = JsonConvert.SerializeObject(newLoanRequest, Formatting.Indented);
 
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine(Constants.DirectExchangeName);
                     Console.WriteLine("[{0}] >> Sending to {1}",
                         DateTime.Now.ToString("HH:mm:ss"), routingKey);
 
-                    channel.ExchangeDeclare(exchange: Constants.DirectExchangeName,
-                        type: Constants.DirectExhangeType);
+                    channel.ExchangeDeclare(exchange: Constants.DirectExchangeName,type: Constants.DirectExhangeType);
 
                     var props = channel.CreateBasicProperties();
                     props.CorrelationId = corrId;
+                    props.ReplyTo = "laurbaer_norm3";
+                    
                    
                     var body = Encoding.UTF8.GetBytes(jsonRecip);
                     channel.BasicPublish(exchange: Constants.DirectExchangeName,

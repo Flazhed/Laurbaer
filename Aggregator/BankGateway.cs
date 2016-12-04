@@ -46,7 +46,7 @@ namespace Aggregator
                 Console.WriteLine("[{0}] << received on {1}",
                     DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey);
                 var loanRequest = JsonConvert.DeserializeObject<LoanRequest>(message);
-                aggregators.Add(probs.CorrelationId, new BankQuoteAggregate(loanRequest.count));
+                aggregators.Add(probs.CorrelationId, new BankQuoteAggregate(loanRequest.count, _messageRouter));
             };
             channel.BasicConsume(queue: queueName,
                 noAck: true,
