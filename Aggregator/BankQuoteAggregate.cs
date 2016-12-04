@@ -31,7 +31,8 @@ namespace Aggregator
             messageCount++;
             if (messageCount == expectedMessages)
             {
-                var bestRate = bankReplies.Aggregate((i1, i2) => i1.InterestRate > i2.InterestRate ? i1 : i2);
+                bankReplies.Add(bankReply);
+                var bestRate = bankReplies.Aggregate((i1, i2) => i1.interestRate > i2.interestRate ? i1 : i2);
                 messageRouter.SendToRecipientList(bestRate);
             }
             else

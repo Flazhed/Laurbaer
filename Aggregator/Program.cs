@@ -32,6 +32,8 @@ namespace Aggregator
         private void Run()
         {
             _bankGateway.CreateConsumer();
+            _bankGateway.CreateSecondConsumer();
+            _bankGateway.CreateDeadLetterWkr();
             Console.WriteLine("Ready to receive");
         }
 

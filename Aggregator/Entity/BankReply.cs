@@ -2,8 +2,8 @@
 {
     public class BankReply
     {
-        public string BankName { get; set; }
-        public string Ssn { get; set; }
-        public double InterestRate { get; set; }
+        public string bankName { get; set; }
+        public string ssn { get; set; }
+        public double interestRate { get; set; }
     }
 }
