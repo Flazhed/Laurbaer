@@ -29,23 +29,27 @@ namespace Aggregator
 
         public void CreateConsumer()
         {
+            var counter = 0;
+
             var connection = _factory.CreateConnection();
             var channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: Constants.DirectExchangeName, type: Constants.DirectExhangeType);
-            var queueName = channel.QueueDeclare().QueueName;
-            channel.QueueBind(queue: queueName, exchange: Constants.DirectExchangeName,
-                routingKey: Constants.EnricherInRoutingKey);
+            channel.ExchangeDeclare(exchange: "ms_exchange", type: Constants.DirectExhangeType);
+            Dictionary<string, object> args = new Dictionary<string, object>();
+            args.Add("x-dead-letter-exchange", "dead_exchange");
+            var queueName = channel.QueueDeclare("skinke", false, false, false, args).QueueName;
+            channel.QueueBind(queue: queueName, exchange: "ms_exchange", routingKey: "init");
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {
+                counter++;
                 var body = ea.Body;
                 var probs = ea.BasicProperties;
                 var message = Encoding.UTF8.GetString(body);
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("[{0}] << received on {1}",
-                    DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey);
+                    DateTime.Now.ToString("HH:mm:ss"), message);
 
                 LoanRequest loanRequest = null;
                 try
@@ -56,15 +60,27 @@ namespace Aggregator
                 {
                     Console.WriteLine(ex.Message);
                     Console.WriteLine("Sending to Dead letter chan.");
+                    channel.BasicNack(ea.DeliveryTag, false, false);
                     //Todo: Send to dead letter
                     return;
                 }
-
-
-                aggregators.Add(probs.CorrelationId, new BankQuoteAggregate(loanRequest.count, _messageRouter));
+                if (probs.CorrelationId != null)
+                {
+                    Console.WriteLine("Ack");
+                    channel.BasicAck(ea.DeliveryTag, true);
+                    aggregators.Add(probs.CorrelationId + counter,
+                        new BankQuoteAggregate(loanRequest.count, _messageRouter));
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("NoAck - " + ea.DeliveryTag);
+                    channel.BasicNack(ea.DeliveryTag, false, false);
+                   
+                }
             };
             channel.BasicConsume(queue: queueName,
-                noAck: true,
+                noAck: false,
                 consumer: consumer);
         }
 
@@ -136,7 +152,7 @@ namespace Aggregator
             var connection = _factory.CreateConnection();
             var channel = connection.CreateModel();
 
-            channel.ExchangeDeclare("dead_exchange", "direct");
+            channel.ExchangeDeclare("dead_exchange", "fanout");
 
 
             channel.QueueDeclare("dead_queue", false, false, false, null);
