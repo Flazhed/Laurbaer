@@ -3,7 +3,7 @@
 namespace Normalizer
 {
     [XmlRoot(ElementName = "LoanRequest")]
-    public class LoanRequest
+    public class LoanResponse
     {
         [XmlElement(ElementName = "interestRate")]
         public string interestRate { get; set; }

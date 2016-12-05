@@ -37,8 +37,9 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RabbitMQ.Client">
-      <HintPath>..\..\..\..\Desktop\rabbitmq-dotnet-client-3.6.5-dotnet-4.5\bin\RabbitMQ.Client.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.4.1.1\lib\net451\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RabbitMQ.ServiceModel">
       <HintPath>..\..\..\..\Desktop\rabbitmq-dotnet-client-3.6.5-dotnet-4.5\bin\RabbitMQ.ServiceModel.dll</HintPath>
@@ -53,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoanRequest.cs" />
+    <Compile Include="LoanResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -16,11 +16,10 @@ namespace Normalizer
             string USERNAME = "student";
             string PASSWORD = "cph";
 
-            string XMLBANK = "cphbusiness.bankXML";
-            string JSONBANK = "cphbusiness.bankJSON";
-            string BANKQUEUE = "laurbaer_norm";
-            string RESULTROUTINGKEY = "NormalizedKEY";
-            string RESULTEXCHANGE = "laurbaer_aggr";
+            string XMLQUEUE = "laurbaer_norm_xml";
+            string JSONQUEUE = "laurbaer_norm_json";
+            //string RESULTROUTINGKEY = "someroutingkey.org";
+            //string RESULTEXCHANGE = "laurbaer_aggr";
 
             var factory = new ConnectionFactory() { HostName = HOSTNAME, UserName = USERNAME, Password = PASSWORD };
             var connection = factory.CreateConnection();
@@ -28,15 +27,9 @@ namespace Normalizer
             var JSONchannel = connection.CreateModel();
             var resultChannel = connection.CreateModel();
 
-            XMLchannel.QueueDeclare(queue: BANKQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
-            JSONchannel.QueueDeclare(queue: BANKQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
+            XMLchannel.QueueDeclare(queue: XMLQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
+            JSONchannel.QueueDeclare(queue: JSONQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
            
-            var XMLqueueName = XMLchannel.QueueDeclare().QueueName;
-            var JSONqueueName = JSONchannel.QueueDeclare().QueueName;
-
-            XMLchannel.QueueBind(queue: BANKQUEUE, exchange: XMLBANK, routingKey: "");
-            JSONchannel.QueueBind(queue: BANKQUEUE, exchange: JSONBANK, routingKey: "");
-            
             //XML Consumer - When xml messages arrives, this EventBasicConsumer will handle it.
             var XMLconsumer = new EventingBasicConsumer(XMLchannel);
             XMLconsumer.Received += (model, ea) =>
@@ -45,23 +38,25 @@ namespace Normalizer
                         var message = Encoding.UTF8.GetString(body);
                         try
                         {
-                            XmlSerializer serializer = new XmlSerializer(typeof(LoanRequest));
+                            XmlSerializer serializer = new XmlSerializer(typeof(LoanResponse));
                             MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(message));
-                            LoanRequest tempLR = (LoanRequest)serializer.Deserialize(memStream);
+                            LoanResponse tempLR = (LoanResponse)serializer.Deserialize(memStream);
                             JObject resultingMessage = JObject.FromObject(tempLR);
-                            resultingMessage.Add("bank", XMLBANK);
+                            //resultingMessage.Add("bank", XMLBANK);
 
                             Console.WriteLine("Received: {0}", resultingMessage.ToString());
 
                             var resultBody = Encoding.UTF8.GetBytes(resultingMessage.ToString());
 
-                            resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
+                           // resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
 
                         }
                         catch (Exception e)
                         {
+                            Console.WriteLine("Message was: \n");
                             Console.WriteLine(message);
-                            Console.WriteLine(e.StackTrace);
+                            Console.WriteLine("ERROR: \n");
+                            Console.WriteLine(e.Message);
                         }
                     };
 
@@ -73,22 +68,17 @@ namespace Normalizer
                         string message = Encoding.UTF8.GetString(body);
 
                         JObject messageJObject = JObject.Parse(message);
-                        messageJObject.Add("bank", JSONBANK);
+                        //messageJObject.Add("bank", JSONBANK);
 
-                        Console.WriteLine("Received from JSON: {0}", messageJObject.ToString());
+                        Console.WriteLine("Received: {0}", messageJObject.ToString());
 
                         var resultBody = Encoding.UTF8.GetBytes(messageJObject.ToString());
 
-                       resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
+                       //  resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
                     };
-
-            var consumerChannel1 = connection.CreateModel();
-            var consumerChannel2 = connection.CreateModel();
-
-
-
-            consumerChannel1.BasicConsume(queue: BANKQUEUE, noAck: true, consumer: JSONconsumer);
-            consumerChannel2.BasicConsume(queue: BANKQUEUE, noAck: true, consumer: XMLconsumer);
+            
+            JSONchannel.BasicConsume(queue: JSONQUEUE, noAck: true, consumer: JSONconsumer);
+            XMLchannel.BasicConsume(queue: XMLQUEUE, noAck: true, consumer: XMLconsumer);
 
             Console.WriteLine(" Press [enter] to exit.");
             Console.ReadLine();
