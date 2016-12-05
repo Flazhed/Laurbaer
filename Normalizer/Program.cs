@@ -16,20 +16,30 @@ namespace Normalizer
             string USERNAME = "student";
             string PASSWORD = "cph";
 
-            string XMLBANK = "XMLBankSWAG";
-            string JSONBANK = "JSONBankSWAG";
+            string XMLBANK = "cphbusiness.bankXML";
+            string JSONBANK = "cphbusiness.bankJSON";
+            string BANKQUEUE = "laurbaer_norm";
             string RESULTROUTINGKEY = "NormalizedKEY";
+            string RESULTEXCHANGE = "laurbaer_aggr";
 
             var factory = new ConnectionFactory() { HostName = HOSTNAME, UserName = USERNAME, Password = PASSWORD };
-            using (var connection = factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: RESULTROUTINGKEY, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            var connection = factory.CreateConnection();
+            var XMLchannel = connection.CreateModel();
+            var JSONchannel = connection.CreateModel();
+            var resultChannel = connection.CreateModel();
 
-                    //XML Consumer - When xml messages arrives, this EventBasicConsumer will handle it.
-                    var XMLconsumer = new EventingBasicConsumer(channel);
-                    XMLconsumer.Received += (model, ea) =>
+            XMLchannel.QueueDeclare(queue: BANKQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
+            JSONchannel.QueueDeclare(queue: BANKQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
+           
+            var XMLqueueName = XMLchannel.QueueDeclare().QueueName;
+            var JSONqueueName = JSONchannel.QueueDeclare().QueueName;
+
+            XMLchannel.QueueBind(queue: BANKQUEUE, exchange: XMLBANK, routingKey: "");
+            JSONchannel.QueueBind(queue: BANKQUEUE, exchange: JSONBANK, routingKey: "");
+            
+            //XML Consumer - When xml messages arrives, this EventBasicConsumer will handle it.
+            var XMLconsumer = new EventingBasicConsumer(XMLchannel);
+            XMLconsumer.Received += (model, ea) =>
                     {
                         var body = ea.Body;
                         var message = Encoding.UTF8.GetString(body);
@@ -45,7 +55,7 @@ namespace Normalizer
 
                             var resultBody = Encoding.UTF8.GetBytes(resultingMessage.ToString());
 
-                            channel.BasicPublish(exchange: "", routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
+                            resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
 
                         }
                         catch (Exception e)
@@ -54,9 +64,10 @@ namespace Normalizer
                             Console.WriteLine(e.StackTrace);
                         }
                     };
-                    //JSON Consumer - When JSON messages arrives, this EventBasicConsumer will handle it.
-                    var JSONconsumer = new EventingBasicConsumer(channel);
-                    JSONconsumer.Received += (model, ea) =>
+
+            //JSON Consumer - When JSON messages arrives, this EventBasicConsumer will handle it.
+            var JSONconsumer = new EventingBasicConsumer(JSONchannel);
+            JSONconsumer.Received += (model, ea) =>
                     {
                         var body = ea.Body;
                         string message = Encoding.UTF8.GetString(body);
@@ -68,16 +79,20 @@ namespace Normalizer
 
                         var resultBody = Encoding.UTF8.GetBytes(messageJObject.ToString());
 
-                        channel.BasicPublish(exchange: "", routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
+                       resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
                     };
 
-                    channel.BasicConsume(queue: JSONBANK, noAck: true, consumer: JSONconsumer);
-                    channel.BasicConsume(queue: XMLBANK, noAck: true, consumer: XMLconsumer);
+            var consumerChannel1 = connection.CreateModel();
+            var consumerChannel2 = connection.CreateModel();
 
-                    Console.WriteLine(" Press [enter] to exit.");
-                    Console.ReadLine();
-                }
-            }
+
+
+            consumerChannel1.BasicConsume(queue: BANKQUEUE, noAck: true, consumer: JSONconsumer);
+            consumerChannel2.BasicConsume(queue: BANKQUEUE, noAck: true, consumer: XMLconsumer);
+
+            Console.WriteLine(" Press [enter] to exit.");
+            Console.ReadLine();
+               
 
         }
     }
