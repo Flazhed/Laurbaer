@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Normalizer", "Normalizer\No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslatorJsonBank", "TranslatorJsonBank\TranslatorJsonBank.csproj", "{439969AB-0B52-40A5-A0E8-2BEB442D145D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipList", "RecipList\RecipList.csproj", "{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{439969AB-0B52-40A5-A0E8-2BEB442D145D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{439969AB-0B52-40A5-A0E8-2BEB442D145D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{439969AB-0B52-40A5-A0E8-2BEB442D145D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
