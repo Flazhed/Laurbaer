@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslatorJsonBank", "Trans
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipList", "RecipList\RecipList.csproj", "{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aggregator", "Aggregator\Aggregator.csproj", "{56BC27B8-3B64-40B5-A683-BA012AEA6893}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditScoreEnricher", "CreditScoreEnricher\CreditScoreEnricher.csproj", "{C14CEBD8-F26C-4365-9729-60B6A1678E5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankEnricher", "BankEnricher\BankEnricher.csproj", "{D71C8281-B00B-464A-8889-47AABCD1419E}"
@@ -51,6 +53,10 @@ Global
 		{D71C8281-B00B-464A-8889-47AABCD1419E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D71C8281-B00B-464A-8889-47AABCD1419E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D71C8281-B00B-464A-8889-47AABCD1419E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

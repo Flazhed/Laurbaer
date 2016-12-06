@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aggregator.Routes;
+using Aggregator.Utils;
 using RabbitMQ.Client;
 
-
-namespace RecipList
+namespace Aggregator
 {
-    public class Program
+    class Program
     {
         private readonly ConnectionFactory _factory;
         private readonly MessageRouter _messageRouter;
-        private readonly Worker _worker;
+        private readonly BankGateway _bankGateway;
 
         public Program()
         {
-            Console.WriteLine("Init Recipient list");
+            Console.WriteLine("Init Aggregator");
             _factory = new ConnectionFactory
             {
                 HostName = Constants.Host,
@@ -25,12 +26,14 @@ namespace RecipList
                 Password = Constants.Password
             };
             _messageRouter = new MessageRouter(_factory);
-            _worker = new Worker(_factory, _messageRouter);
+            _bankGateway = new BankGateway(_factory, _messageRouter);
         }
 
         private void Run()
         {
-            _worker.CreateConsumer();
+            _bankGateway.CreateConsumer();
+            _bankGateway.CreateSecondConsumer();
+            _bankGateway.CreateDeadLetterWkr();
             Console.WriteLine("Ready to receive");
         }
 

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RecipList.Entity;
 
 namespace RecipList
 {
@@ -9,48 +12,42 @@ namespace RecipList
     {
         private readonly ConnectionFactory _factory;
         private readonly MessageRouter _messageRouter;
-        private readonly BankService _bankService;
 
-        public Worker(ConnectionFactory factory, MessageRouter messageRouter, BankService bankService)
+
+        public Worker(ConnectionFactory factory, MessageRouter messageRouter)
         {
             _factory = factory;
             _messageRouter = messageRouter;
-            _bankService = bankService;
         }
 
-        public void CreateWorker()
+        public void CreateConsumer()
         {
-            var channel = CreateChannel();
+            var connection = _factory.CreateConnection();
+            var channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: Constants.ExchangeName, type: Constants.ExhangeType);
-
-            //TODO: Define own.
+            channel.ExchangeDeclare(exchange: Constants.DirectExchangeName, type: Constants.DirectExhangeType);
             var queueName = channel.QueueDeclare().QueueName;
-
-            channel.QueueBind(queue: queueName, exchange: Constants.ExchangeName, routingKey: Constants.RoutingKey);
+            Console.WriteLine(queueName);
+            channel.QueueBind(queue: queueName, exchange: Constants.DirectExchangeName, routingKey: Constants.EnricherInRoutingKey);
 
             var consumer = new EventingBasicConsumer(channel);
-
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine("Msg:: " + message);
-                // TODO: Take msg and send to serive, when format is in place.
-                var eligbaleLenders = _bankService.GetEligibleBankQueues(0, 0, 0);
-                _messageRouter.SendToRecipientList(null, eligbaleLenders);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("[{0}] << received on {1} - msg: {2}",
+                    DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey, message);
+
+                var loanRequest = JsonConvert.DeserializeObject<LoanRequest>(message);
+                var corrId = Guid.NewGuid().ToString();
+                _messageRouter.NotifyAggregator(loanRequest, corrId);
+                _messageRouter.SendToRecipientList(loanRequest, corrId);
             };
 
             channel.BasicConsume(queue: queueName,
                 noAck: true,
                 consumer: consumer);
-        }
-
-
-        private IModel CreateChannel()
-        {
-            a: var connection = _factory.CreateConnection();
-            return connection.CreateModel();
         }
     }
 }
