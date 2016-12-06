@@ -71,6 +71,7 @@ namespace TranslatorBankXML
             {
                 XmlSerializer serializer = new XmlSerializer(o.GetType());
                 tw = new XmlTextWriter(sw);
+                
                 serializer.Serialize(tw, o);
             }
             catch (Exception ex)

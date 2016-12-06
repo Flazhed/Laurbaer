@@ -33,7 +33,7 @@ namespace TranslatorBankXML
         {
             channel.ExchangeDeclare(exchange: StaticHardcodedVariables.directExchangeName, type: "direct");
             var queueName = channel.QueueDeclare().QueueName;
-            channel.QueueBind(queue: queueName, exchange: StaticHardcodedVariables.directExchangeName, routingKey: StaticHardcodedVariables.directExchangeName);
+            channel.QueueBind(queue: queueName, exchange: StaticHardcodedVariables.directExchangeName, routingKey: StaticHardcodedVariables.routingKey);
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += EventBasicConsumer_Recieved;
@@ -49,6 +49,13 @@ namespace TranslatorBankXML
             Console.WriteLine(" [x] Received {0}", messageRecieved);
 
             string[] translatedFormat = aTranslator.Translate(messageRecieved);
+
+            Console.WriteLine(e.RoutingKey);
+            Console.WriteLine(e.Exchange);
+            Console.WriteLine(e.BasicProperties.ReplyTo);
+            //Console.WriteLine(e.BasicProperties.Headers["headerLanguage"]);
+            //Console.WriteLine(e.BasicProperties.Headers["Language"]);
+
             SendToBankQueue(translatedFormat[0], translatedFormat[1], e);
 
             Console.WriteLine("exit? {yes/[no]}: ");

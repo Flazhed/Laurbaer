@@ -50,6 +50,12 @@ namespace TranslatorJsonBank
             string messageRecieved = Encoding.UTF8.GetString(e.Body);
             Console.WriteLine(" [x] Received {0}", messageRecieved);
 
+            Console.WriteLine(e.RoutingKey);
+            Console.WriteLine(e.Exchange);
+            Console.WriteLine(e.BasicProperties.ReplyTo);
+            //Console.WriteLine(e.BasicProperties.Headers["headerLanguage"]);
+            //Console.WriteLine(e.BasicProperties.Headers["Language"]);
+            
             string[] translatedFormat = aTranslator.Translate(messageRecieved);
             SendToBankQueue(translatedFormat[0], translatedFormat[1], e);
 
