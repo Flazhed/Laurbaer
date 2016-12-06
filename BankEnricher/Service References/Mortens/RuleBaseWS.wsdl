@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://bankrulebase.laurbaer.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="RuleBaseWS" targetNamespace="http://bankrulebase.laurbaer.com/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://mytomcatapp-webzite.rhcloud.com:80/RuleBaseWS?xsd=1" namespace="http://bankrulebase.laurbaer.com/" />
+    </xsd:schema>
+  </types>
+  <message name="rules">
+    <part name="parameters" element="tns:rules" />
+  </message>
+  <message name="rulesResponse">
+    <part name="parameters" element="tns:rulesResponse" />
+  </message>
+  <portType name="RuleBase">
+    <operation name="rules">
+      <input wsam:Action="http://bankrulebase.laurbaer.com/RuleBase/rulesRequest" message="tns:rules" />
+      <output wsam:Action="http://bankrulebase.laurbaer.com/RuleBase/rulesResponse" message="tns:rulesResponse" />
+    </operation>
+  </portType>
+  <binding name="RuleBasePortBinding" type="tns:RuleBase">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="rules">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="RuleBaseWS">
+    <port name="RuleBasePort" binding="tns:RuleBasePortBinding">
+      <soap:address location="http://mytomcatapp-webzite.rhcloud.com:80/RuleBaseWS" />
+    </port>
+  </service>
+</definitions>

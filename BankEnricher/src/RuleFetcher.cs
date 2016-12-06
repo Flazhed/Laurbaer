@@ -15,6 +15,8 @@ namespace BankEnricher.src
             RuleBaseWSClient bankRules = new RuleBaseWSClient();
             string banksJson = bankRules.rules(loanDuration, loanAmount, creditScore);
             return banksJson;
+            //Mortens.RuleBaseClient morten = new BankEnricher.Mortens.RuleBaseClient();
+            //return morten.rules(loanDuration, loanAmount, creditScore);
         }
 
     }

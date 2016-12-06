@@ -58,6 +58,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Mortens\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="src\ConnectionFactoryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Constants.cs" />
@@ -77,12 +82,20 @@
     <None Include="Service References\BankRules\RuleBaseWS.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\Mortens\BankEnricher.Mortens.rulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Mortens\RuleBaseWS.wsdl" />
+    <None Include="Service References\Mortens\RuleBaseWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\BankRules\" />
+    <WCFMetadataStorage Include="Service References\Mortens\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\BankRules\configuration91.svcinfo" />
@@ -92,6 +105,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\BankRules\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Mortens\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Mortens\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Mortens\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
