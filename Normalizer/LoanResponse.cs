@@ -2,7 +2,7 @@
 
 namespace Normalizer
 {
-    [XmlRoot(ElementName = "LoanRequest")]
+    [XmlRoot(ElementName = "LoanResponse")]
     public class LoanResponse
     {
         [XmlElement(ElementName = "interestRate")]

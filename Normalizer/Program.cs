@@ -16,74 +16,86 @@ namespace Normalizer
             string USERNAME = "student";
             string PASSWORD = "cph";
 
-            string XMLQUEUE = "laurbaer_norm_xml";
-            string JSONQUEUE = "laurbaer_norm_json";
-            //string RESULTROUTINGKEY = "someroutingkey.org";
-            //string RESULTEXCHANGE = "laurbaer_aggr";
+            string QUEUE = "laurbaer_norm";
+            string RESULTROUTINGKEY = "laurbaer_aggr";
+            string RESULTEXCHANGE = "laurbaer_direct";
+            string XMLBANK = "Bank XML";
+            string JSONBANK = "Bank JSON";
 
             var factory = new ConnectionFactory() { HostName = HOSTNAME, UserName = USERNAME, Password = PASSWORD };
             var connection = factory.CreateConnection();
-            var XMLchannel = connection.CreateModel();
-            var JSONchannel = connection.CreateModel();
+            var channel = connection.CreateModel();
             var resultChannel = connection.CreateModel();
 
-            XMLchannel.QueueDeclare(queue: XMLQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
-            JSONchannel.QueueDeclare(queue: JSONQUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
-           
-            //XML Consumer - When xml messages arrives, this EventBasicConsumer will handle it.
-            var XMLconsumer = new EventingBasicConsumer(XMLchannel);
-            XMLconsumer.Received += (model, ea) =>
+            channel.QueueDeclare(queue: QUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
+            resultChannel.ExchangeDeclare(exchange: RESULTEXCHANGE, type: "direct");
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += (model, ea) =>
                     {
-                        var body = ea.Body;
-                        var message = Encoding.UTF8.GetString(body);
-                        try
-                        {
-                            XmlSerializer serializer = new XmlSerializer(typeof(LoanResponse));
-                            MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(message));
-                            LoanResponse tempLR = (LoanResponse)serializer.Deserialize(memStream);
-                            JObject resultingMessage = JObject.FromObject(tempLR);
-                            //resultingMessage.Add("bank", XMLBANK);
+                        if(Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) != null){
+                            var language = Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]);
 
-                            Console.WriteLine("Received: {0}", resultingMessage.ToString());
+                            var body = ea.Body;
+                            string message = Encoding.UTF8.GetString(body);
 
-                            var resultBody = Encoding.UTF8.GetBytes(resultingMessage.ToString());
+                            if (language.ToLower().Equals("json"))
+                            {
+                                JObject messageJObject = JObject.Parse(message);
 
-                           // resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
+                                Console.WriteLine("Received: {0}", messageJObject.ToString());
+                                
+                                messageJObject.Add("bankName", JSONBANK);
+                                var resultBody = Encoding.UTF8.GetBytes(messageJObject.ToString());
+
+                                Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
+                                resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: ea.BasicProperties, body: resultBody);
+
+                            }
+                            else if (language.ToLower().Equals("xml"))
+                            {
+                                try
+                                {
+                                    XmlSerializer serializer = new XmlSerializer(typeof(LoanResponse));
+                                    MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(message));
+                                    LoanResponse tempLR = (LoanResponse)serializer.Deserialize(memStream);
+                                    JObject resultingMessage = JObject.FromObject(tempLR);
+
+                                    Console.WriteLine("Received: {0}", resultingMessage.ToString());
+                                    resultingMessage.Add("bankName", XMLBANK);
+                                    var resultBody = Encoding.UTF8.GetBytes(resultingMessage.ToString());
+
+                                    Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
+                                    resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: ea.BasicProperties, body: resultBody);
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine("Message was: \n");
+                                    Console.WriteLine(message + "\n");
+                                    Console.WriteLine("ERROR: \n");
+                                    Console.WriteLine(e.Message + "\n");
+
+
+                                    Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Language-Header was not null, but not correct either. \nHeader was:" + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]));
+                            }
 
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Console.WriteLine("Message was: \n");
-                            Console.WriteLine(message);
-                            Console.WriteLine("ERROR: \n");
-                            Console.WriteLine(e.Message);
+                            Console.WriteLine("Language-Header was null");
                         }
-                    };
-
-            //JSON Consumer - When JSON messages arrives, this EventBasicConsumer will handle it.
-            var JSONconsumer = new EventingBasicConsumer(JSONchannel);
-            JSONconsumer.Received += (model, ea) =>
-                    {
-                        var body = ea.Body;
-                        string message = Encoding.UTF8.GetString(body);
-
-                        JObject messageJObject = JObject.Parse(message);
-                        //messageJObject.Add("bank", JSONBANK);
-
-                        Console.WriteLine("Received: {0}", messageJObject.ToString());
-
-                        var resultBody = Encoding.UTF8.GetBytes(messageJObject.ToString());
-
-                       //  resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: null, body: resultBody);
                     };
             
-            JSONchannel.BasicConsume(queue: JSONQUEUE, noAck: true, consumer: JSONconsumer);
-            XMLchannel.BasicConsume(queue: XMLQUEUE, noAck: true, consumer: XMLconsumer);
+            channel.BasicConsume(queue: QUEUE, noAck: true, consumer: consumer);
 
-            Console.WriteLine(" Press [enter] to exit.");
+            Console.WriteLine("READY FOR ACTION");
             Console.ReadLine();
-               
-
         }
     }
 }
