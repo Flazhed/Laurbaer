@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Aggregator.Entity;
@@ -19,7 +20,7 @@ namespace Aggregator
         private readonly MessageRouter _messageRouter;
         private string whatever { set; get; }
 
-
+        private int counter = 0;
         public BankGateway(ConnectionFactory factory, MessageRouter messageRouter)
         {
             _factory = factory;
@@ -34,11 +35,11 @@ namespace Aggregator
             var connection = _factory.CreateConnection();
             var channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: "ms_exchange", type: Constants.DirectExhangeType);
+            channel.ExchangeDeclare(exchange: "laurbaer_direct", type: Constants.DirectExhangeType);
             Dictionary<string, object> args = new Dictionary<string, object>();
             args.Add("x-dead-letter-exchange", "dead_exchange");
-            var queueName = channel.QueueDeclare("skinke", false, false, false, args).QueueName;
-            channel.QueueBind(queue: queueName, exchange: "ms_exchange", routingKey: "init");
+            var queueName = channel.QueueDeclare("laur_agg", false, false, false, args).QueueName;
+            channel.QueueBind(queue: queueName, exchange: "laurbaer_direct", routingKey: "aggOut");
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
@@ -68,7 +69,7 @@ namespace Aggregator
                 {
                     Console.WriteLine("Ack");
                     channel.BasicAck(ea.DeliveryTag, true);
-                    aggregators.Add(probs.CorrelationId + counter,
+                    aggregators.Add(probs.CorrelationId,
                         new BankQuoteAggregate(loanRequest.count, _messageRouter));
                 }
                 else
@@ -89,14 +90,14 @@ namespace Aggregator
             var connection = _factory.CreateConnection();
             var channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: "test_exchange", type: Constants.DirectExhangeType);
+            channel.ExchangeDeclare(exchange: Constants.DirectExchangeName, type: Constants.DirectExhangeType);
 
             Dictionary<string, object> args = new Dictionary<string, object>();
             args.Add("x-dead-letter-exchange", "dead_exchange");
 
-            var queueName = channel.QueueDeclare("test_queue", false, false, false, args).QueueName;
+            var queueName = channel.QueueDeclare("", false, false, false, args).QueueName;
             Console.WriteLine(queueName);
-            channel.QueueBind(queue: queueName, exchange: "test_exchange", routingKey: "test");
+            channel.QueueBind(queue: queueName, exchange: Constants.DirectExchangeName, routingKey: "laurbaer_aggr");
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
@@ -106,7 +107,9 @@ namespace Aggregator
                 var message = Encoding.UTF8.GetString(body);
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("[{0}] << received on {1}",
-                    DateTime.Now.ToString("HH:mm:ss"), Constants.EnricherInRoutingKey);
+                    DateTime.Now.ToString("HH:mm:ss"), message);
+
+                
 
                 BankReply loanRequest = null;
                 try
@@ -125,11 +128,12 @@ namespace Aggregator
                     //Todo: Send to dead letter
                     return;
                 }
-
+                
                 //If no correlationId found.. Dead letter channel or whatevr. also handle timeout
                 BankQuoteAggregate bankQuoteAggregate = null;
                 if (aggregators.TryGetValue(probs.CorrelationId, out bankQuoteAggregate))
                 {
+                    channel.BasicAck(ea.DeliveryTag, false);
                     bankQuoteAggregate.AddBankReply(loanRequest);
                 }
                 else

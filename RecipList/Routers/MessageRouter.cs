@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -43,8 +44,15 @@ namespace RecipList
                     channel.ExchangeDeclare(exchange: Constants.DirectExchangeName,type: Constants.DirectExhangeType);
 
                     var props = channel.CreateBasicProperties();
+
+                    Dictionary<string, object> propsHeaders = new Dictionary<string, object>();
+
+                    
+                    propsHeaders.Add("language", loanRequest.banks[i].headerLanguage);
+
+                    props.Headers = propsHeaders;
                     props.CorrelationId = corrId;
-                    props.ReplyTo = "laurbaer_norm3";
+                    props.ReplyTo = "laurbaer_norm";
                     
                    
                     var body = Encoding.UTF8.GetBytes(jsonRecip);

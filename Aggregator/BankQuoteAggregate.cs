@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Aggregator.Entity;
 using Aggregator.Routes;
@@ -32,7 +33,8 @@ namespace Aggregator
             if (messageCount == expectedMessages)
             {
                 bankReplies.Add(bankReply);
-                var bestRate = bankReplies.Aggregate((i1, i2) => i1.interestRate > i2.interestRate ? i1 : i2);
+                var bestRate = bankReplies.Aggregate((i1, i2) => i1.interestRate < i2.interestRate ? i1 : i2);
+                Console.WriteLine("Best rate: {0} with bank: {1}", bestRate.interestRate, bestRate.bankName);
                 messageRouter.SendToRecipientList(bestRate);
             }
             else
