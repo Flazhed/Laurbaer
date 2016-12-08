@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="LoanRequestSendToReplyTo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ssn" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="creditScore" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="loanAmount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="months" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="replyTo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="correlationID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoanRequestSendToReplyToResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LoanRequestSendToReplyToResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoanRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ssn" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="creditScore" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="loanAmount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="months" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoanRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoanRequestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoanRequestSendToReplyToSoapIn">
+    <wsdl:part name="parameters" element="tns:LoanRequestSendToReplyTo" />
+  </wsdl:message>
+  <wsdl:message name="LoanRequestSendToReplyToSoapOut">
+    <wsdl:part name="parameters" element="tns:LoanRequestSendToReplyToResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoanRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:LoanRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoanRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:LoanRequestResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LoanServiceSoap">
+    <wsdl:operation name="LoanRequestSendToReplyTo">
+      <wsdl:input message="tns:LoanRequestSendToReplyToSoapIn" />
+      <wsdl:output message="tns:LoanRequestSendToReplyToSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoanRequest">
+      <wsdl:input message="tns:LoanRequestSoapIn" />
+      <wsdl:output message="tns:LoanRequestSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LoanServiceSoap" type="tns:LoanServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LoanRequestSendToReplyTo">
+      <soap:operation soapAction="http://tempuri.org/LoanRequestSendToReplyTo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoanRequest">
+      <soap:operation soapAction="http://tempuri.org/LoanRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LoanServiceSoap12" type="tns:LoanServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LoanRequestSendToReplyTo">
+      <soap12:operation soapAction="http://tempuri.org/LoanRequestSendToReplyTo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoanRequest">
+      <soap12:operation soapAction="http://tempuri.org/LoanRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LoanService">
+    <wsdl:port name="LoanServiceSoap" binding="tns:LoanServiceSoap">
+      <soap:address location="http://localhost:53129/LoanService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LoanServiceSoap12" binding="tns:LoanServiceSoap12">
+      <soap12:address location="http://localhost:53129/LoanService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

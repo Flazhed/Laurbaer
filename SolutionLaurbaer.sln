@@ -41,6 +41,11 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "BankWebService", "..\..\..\
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslatorWebserviceBank", "TranslatorWebserviceBank\TranslatorWebserviceBank.csproj", "{7B1A1DC3-CD4D-4304-8578-7EC755F33370}"
+	ProjectSection(ProjectDependencies) = postProject
+		{80E28511-7E34-4A83-BAE3-913285788EC7} = {80E28511-7E34-4A83-BAE3-913285788EC7}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +88,10 @@ Global
 		{80E28511-7E34-4A83-BAE3-913285788EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80E28511-7E34-4A83-BAE3-913285788EC7}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{80E28511-7E34-4A83-BAE3-913285788EC7}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
