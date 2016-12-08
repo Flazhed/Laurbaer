@@ -19,6 +19,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditScoreEnricher", "Cred
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankEnricher", "BankEnricher\BankEnricher.csproj", "{D71C8281-B00B-464A-8889-47AABCD1419E}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "BankWebService", "..\..\..\Documents\Visual Studio 2015\WebSites\BankWebService\", "{80E28511-7E34-4A83-BAE3-913285788EC7}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_53129"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\Documents\Visual Studio 2015\WebSites\BankWebService\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53129\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_53129"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\Documents\Visual Studio 2015\WebSites\BankWebService\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53129\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "53129"
+		SlnRelativePath = "..\..\..\Documents\Visual Studio 2015\WebSites\BankWebService\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +67,10 @@ Global
 		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A247AFA3-C95A-414C-8DEB-1D1866B09CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C14CEBD8-F26C-4365-9729-60B6A1678E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C14CEBD8-F26C-4365-9729-60B6A1678E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C14CEBD8-F26C-4365-9729-60B6A1678E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +79,10 @@ Global
 		{D71C8281-B00B-464A-8889-47AABCD1419E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D71C8281-B00B-464A-8889-47AABCD1419E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D71C8281-B00B-464A-8889-47AABCD1419E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56BC27B8-3B64-40B5-A683-BA012AEA6893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80E28511-7E34-4A83-BAE3-913285788EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E28511-7E34-4A83-BAE3-913285788EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80E28511-7E34-4A83-BAE3-913285788EC7}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E28511-7E34-4A83-BAE3-913285788EC7}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
