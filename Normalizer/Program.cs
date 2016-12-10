@@ -5,6 +5,7 @@ using RabbitMQ.Client.Events;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Xml.Serialization;
+using static Normalizer.Constants;
 
 namespace Normalizer
 {
@@ -12,23 +13,13 @@ namespace Normalizer
     {
         public static void Main()
         {
-            string HOSTNAME = "datdb.cphbusiness.dk";
-            string USERNAME = "student";
-            string PASSWORD = "cph";
-
-            string QUEUE = "laurbaer_norm";
-            string RESULTROUTINGKEY = "laurbaer_aggr";
-            string RESULTEXCHANGE = "laurbaer_direct";
-            string XMLBANK = "Bank XML";
-            string JSONBANK = "Bank JSON";
-
             var factory = new ConnectionFactory() { HostName = HOSTNAME, UserName = USERNAME, Password = PASSWORD };
             var connection = factory.CreateConnection();
             var channel = connection.CreateModel();
             var resultChannel = connection.CreateModel();
 
             channel.QueueDeclare(queue: QUEUE, durable: true, exclusive: false, autoDelete: false, arguments: null);
-            resultChannel.ExchangeDeclare(exchange: RESULTEXCHANGE, type: "direct");
+            resultChannel.ExchangeDeclare(exchange: RESULTEXCHANGE, type: DIRECTTYPE);
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
@@ -39,7 +30,7 @@ namespace Normalizer
                             var body = ea.Body;
                             string message = Encoding.UTF8.GetString(body);
 
-                            if (language.ToLower().Equals("json"))
+                            if (language.ToLower().Equals(LANGUAGEJSON))
                             {
                                 JObject messageJObject = JObject.Parse(message);
 
@@ -50,9 +41,8 @@ namespace Normalizer
 
                                 Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
                                 resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: ea.BasicProperties, body: resultBody);
-
                             }
-                            else if (language.ToLower().Equals("xml"))
+                            else if (language.ToLower().Equals(LANGUAGEXML))
                             {
                                 try
                                 {
@@ -67,7 +57,6 @@ namespace Normalizer
 
                                     Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
                                     resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: ea.BasicProperties, body: resultBody);
-
                                 }
                                 catch (Exception e)
                                 {
@@ -76,7 +65,6 @@ namespace Normalizer
                                     Console.WriteLine("ERROR: \n");
                                     Console.WriteLine(e.Message + "\n");
 
-
                                     Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
                                 }
                             }
@@ -84,14 +72,12 @@ namespace Normalizer
                             {
                                 Console.WriteLine("Language-Header was not null, but not correct either. \nHeader was:" + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]));
                             }
-
                         }
                         else
                         {
                             Console.WriteLine("Language-Header was null");
                         }
                     };
-            
             channel.BasicConsume(queue: QUEUE, noAck: true, consumer: consumer);
 
             Console.WriteLine("READY FOR ACTION");
