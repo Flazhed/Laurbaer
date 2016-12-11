@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -36,16 +38,36 @@ namespace SoapWebService
                     autoDelete: false,
                     arguments: null);
 
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
+                QueueingBasicConsumer consumer;
+                //           channel.BasicQos(0, 1, false);
+                try
                 {
-                    var body = ea.Body;
+                    consumer = new QueueingBasicConsumer(channel);
+                    channel.BasicConsume(queueName, true, consumer);
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception.Message);
+                    return "Error:" + exception;
+                }
+
+                string response = null;
+                var ea = (BasicDeliverEventArgs) consumer.Queue.Dequeue();
+
+                var body = ea.Body;
+                var props = ea.BasicProperties;
+                var replyProps = channel.CreateBasicProperties();
+                replyProps.CorrelationId = props.CorrelationId;
+
+                try
+                {
                     message = Encoding.UTF8.GetString(body);
-                    channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
-                };
-                channel.BasicConsume(queue: queueName,
-                    noAck: false,
-                    consumer: consumer);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(" [.] " + e.Message);
+                    response = "";
+                }
             }
             return message;
         }

@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aggregator", "Aggregator\Ag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapWebService", "SoapWebService\SoapWebService.csproj", "{06335D90-F9FE-476A-8598-1F09C7FB1D86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AggRefactored", "AggRefactored\AggRefactored.csproj", "{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapClient", "SoapClient\SoapClient.csproj", "{CCACD99C-EE01-44A4-BEAC-66A8055CD645}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06335D90-F9FE-476A-8598-1F09C7FB1D86} = {06335D90-F9FE-476A-8598-1F09C7FB1D86}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +46,14 @@ Global
 		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

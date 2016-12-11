@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Services;
 using Newtonsoft.Json;
@@ -29,14 +30,15 @@ namespace SoapWebService
             LoanRequest loanRequest = new LoanRequest {ssn = ssn, loanAmount = loanAmount, loanDuration = loanDuration};
             var corrId = Guid.NewGuid().ToString();
 
+            worker = new Worker(QueueName);
             sender = new Sender(QueueName);
             var sended = sender.Send(loanRequest, corrId);
 
             if (sended)
             {
-                worker = new Worker(QueueName);
                 msg = worker.Consume();
             }
+
 
             return msg;
         }
