@@ -67,7 +67,20 @@ namespace TranslatorWebserviceBank
         {
             localhost.LoanService bank = new localhost.LoanService();
             string[] bankinfo = bankFormat.Split(':');
-            bank.LoanRequestSendToReplyTo(bankinfo[0].Trim(' '), int.Parse(bankinfo[1].Trim(' ')), double.Parse(bankinfo[2].Trim(' ')), int.Parse(bankinfo[3].Trim(' ')), e.BasicProperties.ReplyTo, int.Parse(e.BasicProperties.CorrelationId));
+            string response = bank.LoanRequest(bankinfo[0].Trim(' '), int.Parse(bankinfo[1].Trim(' ')), double.Parse(bankinfo[2].Trim(' ')), int.Parse(bankinfo[3].Trim(' ')));
+
+            var factory = new ConnectionFactory() { HostName = StaticHardcodedVariables.host_Name };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+
+                channel.ExchangeDeclare(exchange: e.BasicProperties.ReplyTo, type: "direct");
+
+               
+                //e.BasicProperties.Headers.Add("language", "string");
+                channel.BasicPublish(exchange: e.BasicProperties.ReplyTo, routingKey: "", basicProperties: e.BasicProperties, body: Encoding.UTF8.GetBytes(response));
+                //Console.WriteLine(" [x] Sent {0} with basicproperties : {1}", e.Body, e.BasicProperties.ToString());
+            }
         }
     }
 }

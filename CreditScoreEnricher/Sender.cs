@@ -10,7 +10,7 @@ namespace CreditScoreEnricher
     public class Sender
     {
 
-        public void Send(ConnectionFactory factory, string message)
+        public static void Send(ConnectionFactory factory, string message, IBasicProperties prob)
         {
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
@@ -20,7 +20,7 @@ namespace CreditScoreEnricher
 
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: Constants.DirectExchanceName, routingKey: Constants.DirectRoutingKeyEnriched, basicProperties: null, body: body);
+                channel.BasicPublish(exchange: Constants.DirectExchanceName, routingKey: Constants.DirectRoutingKeyEnriched, basicProperties: prob, body: body);
                 Console.WriteLine(" [x] Sent {0}", message);
 
 

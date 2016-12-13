@@ -21,7 +21,7 @@ namespace Aggregator.Routes
             using (var connection = _factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                string routingKey = "Should not be hardcoded here.";
+                string routingKey = "laurbaer_soap_response";
 
                 string jsonRecip = JsonConvert.SerializeObject(bankReply, Formatting.Indented);
 

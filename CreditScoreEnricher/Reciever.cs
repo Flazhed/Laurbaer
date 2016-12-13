@@ -11,7 +11,7 @@ namespace CreditScoreEnricher
     public class Reciever
     {
 
-        public void Recieve(ConnectionFactory factory)
+        public static void Recieve(ConnectionFactory factory)
         {
 
             var connection = factory.CreateConnection();
@@ -31,7 +31,7 @@ namespace CreditScoreEnricher
                     Console.WriteLine(" [x] Received {0}", message);
                     message = Enricher.Enrich(message);
                     Console.WriteLine("Enriched");
-                    new Sender().Send(factory, message);
+                    Sender.Send(factory, message, ea.BasicProperties);
                     
                 };
                 channel.BasicConsume(queue: queueName, noAck: true, consumer: consumer);

@@ -25,12 +25,12 @@ namespace Normalizer
             consumer.Received += (model, ea) =>
                     {
                         if(Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) != null){
-                            var language = Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]);
+                            var language = (Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"])).ToLower();
 
                             var body = ea.Body;
                             string message = Encoding.UTF8.GetString(body);
 
-                            if (language.ToLower().Equals(LANGUAGEJSON))
+                            if (language.Equals(LANGUAGEJSON))
                             {
                                 JObject messageJObject = JObject.Parse(message);
 
@@ -42,7 +42,7 @@ namespace Normalizer
                                 Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
                                 resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: ea.BasicProperties, body: resultBody);
                             }
-                            else if (language.ToLower().Equals(LANGUAGEXML))
+                            else if (language.Equals(LANGUAGEXML))
                             {
                                 try
                                 {
@@ -68,6 +68,21 @@ namespace Normalizer
                                     Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
                                 }
                             }
+                            else if (language.Equals(LANGUAGESTRING))
+                            {
+                                //JObject messageJObject = JObject.Parse(message);
+                                string sssn = message.Split(',')[0].Split(':')[1];
+                                string intrestrate = message.Split(',')[1].Split(':')[1];
+                                Console.WriteLine("Received: ssn: {0} : intrestrate: {1}", sssn ,intrestrate );
+                                JObject messageJObject = new JObject();
+                                messageJObject.Add("ssn",sssn);
+                                messageJObject.Add("interestRate",intrestrate);
+                                messageJObject.Add("bankName", LAURBAERBANK);
+                                var resultBody = Encoding.UTF8.GetBytes(messageJObject.ToString());
+
+                                Console.WriteLine("Header was: " + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]) + "\n");
+                                resultChannel.BasicPublish(exchange: RESULTEXCHANGE, routingKey: RESULTROUTINGKEY, basicProperties: ea.BasicProperties, body: resultBody);
+                            }   
                             else
                             {
                                 Console.WriteLine("Language-Header was not null, but not correct either. \nHeader was:" + Encoding.UTF8.GetString((Byte[])ea.BasicProperties.Headers["language"]));
