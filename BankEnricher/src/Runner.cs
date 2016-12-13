@@ -12,7 +12,7 @@ namespace BankEnricher.src
         static void Main(string[] args)
         {
             ConnectionFactory factory = new ConnectionFactoryBuilder().CreateConnectionFactory();
-            new Reciever().Recieve(factory);
+            Reciever.Recieve(factory);
             //Console.ReadLine();
         }
 
