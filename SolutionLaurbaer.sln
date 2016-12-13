@@ -21,7 +21,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankEnricher", "BankEnriche
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslatorWebserviceBank", "TranslatorWebserviceBank\TranslatorWebserviceBank.csproj", "{7B1A1DC3-CD4D-4304-8578-7EC755F33370}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "BankWebService(1)", "BankWebService\", "{A01F5E63-19A8-4CD7-9866-4209BFD7BFE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapWebService", "SoapWebService\SoapWebService.csproj", "{06335D90-F9FE-476A-8598-1F09C7FB1D86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AggRefactored", "AggRefactored\AggRefactored.csproj", "{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapClient", "SoapClient\SoapClient.csproj", "{CCACD99C-EE01-44A4-BEAC-66A8055CD645}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06335D90-F9FE-476A-8598-1F09C7FB1D86} = {06335D90-F9FE-476A-8598-1F09C7FB1D86}
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "BankWebService", "BankWebService\", "{A01F5E63-19A8-4CD7-9866-4209BFD7BFE1}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_53924"
@@ -84,6 +93,18 @@ Global
 		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B1A1DC3-CD4D-4304-8578-7EC755F33370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06335D90-F9FE-476A-8598-1F09C7FB1D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C96CF08-0250-4ED8-A3FC-2BC5C7E87672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCACD99C-EE01-44A4-BEAC-66A8055CD645}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A01F5E63-19A8-4CD7-9866-4209BFD7BFE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A01F5E63-19A8-4CD7-9866-4209BFD7BFE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A01F5E63-19A8-4CD7-9866-4209BFD7BFE1}.Release|Any CPU.ActiveCfg = Debug|Any CPU
