@@ -8,7 +8,7 @@ namespace SoapWebService
     public class Sender
     {
         private ConnectionFactory connectionFactory;
-        private const string RoutingKey = "hansen";
+        private const string RoutingKey = "credit_score_not_enriched";
         private const string ExchangeName = "laurbaer_direct";
         private string queueName;
 

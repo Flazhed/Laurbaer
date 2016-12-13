@@ -27,6 +27,11 @@ namespace SoapWebService
         {
             var msg = "Error";
 
+            //string ssnremove = "010101-0101";
+            //float loanAm = 10.5F;
+            //float Duarr = 10F;
+    
+
             LoanRequest loanRequest = new LoanRequest {ssn = ssn, loanAmount = loanAmount, loanDuration = loanDuration};
             var corrId = Guid.NewGuid().ToString();
 

@@ -22,9 +22,9 @@ namespace SoapClient
             laurbaer = new LaurbaerServiceSoapClient();
             //Bad bad, but in this small client its ok. Read: http://stackoverflow.com/questions/10775367/cross-thread-operation-not-valid-control-textbox1-accessed-from-a-thread-othe
             TextBox.CheckForIllegalCrossThreadCalls = false;
-            textBoxSsn.Text = RandomString(10);
-            textBoxAmount.Text = RandomString(4);
-            textBoxDuration.Text = "10";
+            //textBoxSsn.Text = RandomString(10);
+            //textBoxAmount.Text = RandomString(4);
+            //textBoxDuration.Text = "10";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,17 +33,27 @@ namespace SoapClient
 
             //Timeout set to 1min.
             //TODO: uncomment
-            new Thread(delegate ()
+            new Thread(delegate()
             {
-                rate = laurbaer.SoapLoanRequest(textBoxSsn.Text, float.Parse(textBoxAmount.Text),
+                try
+                {
+                    rate = laurbaer.SoapLoanRequest(textBoxSsn.Text, float.Parse(textBoxAmount.Text),
                     float.Parse(textBoxDuration.Text));
+                }
+                catch (TimeoutException exception)
+                {
+                    textBox1.Text = exception.Message;
+                    return;
+                }
+
+                
 
                 textBox1.Text = rate;
             }).Start();
 
             textBox1.Text = rate;
-            textBoxSsn.Text = RandomString(10);
-            textBoxAmount.Text = RandomString(4);
+            // textBoxSsn.Text = RandomString(10);
+            // textBoxAmount.Text = RandomString(4);
         }
 
         private static Random random = new Random();
@@ -75,6 +85,10 @@ namespace SoapClient
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
         }
     }

@@ -42,7 +42,7 @@
             // 
             // buttonRequest
             // 
-            this.buttonRequest.Location = new System.Drawing.Point(197, 226);
+            this.buttonRequest.Location = new System.Drawing.Point(15, 172);
             this.buttonRequest.Name = "buttonRequest";
             this.buttonRequest.Size = new System.Drawing.Size(75, 23);
             this.buttonRequest.TabIndex = 0;
@@ -92,6 +92,7 @@
             this.textBoxAmount.Name = "textBoxAmount";
             this.textBoxAmount.Size = new System.Drawing.Size(100, 20);
             this.textBoxAmount.TabIndex = 5;
+            this.textBoxAmount.Text = "10000,50";
             // 
             // textBoxDuration
             // 
@@ -99,6 +100,7 @@
             this.textBoxDuration.Name = "textBoxDuration";
             this.textBoxDuration.Size = new System.Drawing.Size(100, 20);
             this.textBoxDuration.TabIndex = 6;
+            this.textBoxDuration.Text = "14";
             // 
             // process1
             // 
@@ -126,7 +128,7 @@
             this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(15, 229);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.Size = new System.Drawing.Size(466, 20);
             this.textBox1.TabIndex = 8;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -134,7 +136,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(491, 257);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxDuration);
@@ -146,6 +148,7 @@
             this.Controls.Add(this.buttonRequest);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

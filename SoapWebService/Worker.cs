@@ -32,18 +32,18 @@ namespace SoapWebService
             using (var connection = connectionFactory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: queueName,
-                    durable: true,
-                    exclusive: false,
-                    autoDelete: false,
-                    arguments: null);
+                channel.ExchangeDeclare("laurbaer_direct", "direct");
+
+                string quName = channel.QueueDeclare().QueueName;
+
+                channel.QueueBind(quName, "laurbaer_direct", "laurbaer_soap_response");
 
                 QueueingBasicConsumer consumer;
                 //           channel.BasicQos(0, 1, false);
                 try
                 {
                     consumer = new QueueingBasicConsumer(channel);
-                    channel.BasicConsume(queueName, true, consumer);
+                    channel.BasicConsume(quName, true, consumer);
                 }
                 catch (Exception exception)
                 {
