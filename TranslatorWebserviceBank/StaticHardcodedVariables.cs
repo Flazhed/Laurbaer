@@ -12,6 +12,6 @@ namespace TranslatorWebserviceBank
         public static string username = "student";
         public static string password = "cph";
         public static string directExchangeName = "laurbaer_direct";
-        public static string routingKey = "laurbaer_Webservice_translator";
+        public static string routingKey = "laurbaer_webservice_translator";
     }
 }

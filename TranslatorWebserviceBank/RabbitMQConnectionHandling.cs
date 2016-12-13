@@ -77,7 +77,7 @@ namespace TranslatorWebserviceBank
                 channel.ExchangeDeclare(exchange: e.BasicProperties.ReplyTo, type: "direct");
 
                
-                e.BasicProperties.Headers.Add("language", "string");
+                //e.BasicProperties.Headers.Add("language", "string");
                 channel.BasicPublish(exchange: e.BasicProperties.ReplyTo, routingKey: "", basicProperties: e.BasicProperties, body: Encoding.UTF8.GetBytes(response));
                 //Console.WriteLine(" [x] Sent {0} with basicproperties : {1}", e.Body, e.BasicProperties.ToString());
             }
