@@ -70,10 +70,13 @@ namespace Normalizer
                             }
                             else if (language.Equals(LANGUAGESTRING))
                             {
-                                JObject messageJObject = JObject.Parse(message);
-
-                                Console.WriteLine("Received: {0}", messageJObject.ToString());
-
+                                //JObject messageJObject = JObject.Parse(message);
+                                string sssn = message.Split(',')[0].Split(':')[1];
+                                string intrestrate = message.Split(',')[1].Split(':')[1];
+                                Console.WriteLine("Received: ssn: {0} : intrestrate: {1}", sssn ,intrestrate );
+                                JObject messageJObject = new JObject();
+                                messageJObject.Add("ssn",sssn);
+                                messageJObject.Add("interestRate",intrestrate);
                                 messageJObject.Add("bankName", LAURBAERBANK);
                                 var resultBody = Encoding.UTF8.GetBytes(messageJObject.ToString());
 
