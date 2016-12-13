@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TranslatorWebserviceBank
+namespace BankWebService.App_Code
 {
     public class StaticHardcodedVariables
     {
@@ -12,6 +12,6 @@ namespace TranslatorWebserviceBank
         public static string username = "student";
         public static string password = "cph";
         public static string directExchangeName = "laurbaer_direct";
-        public static string routingKey = "laurbaer_webservice_translator";
+        public static string routingKey = "laurbaer_xml_translator";
     }
 }
