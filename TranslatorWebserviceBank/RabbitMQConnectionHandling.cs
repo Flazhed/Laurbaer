@@ -55,7 +55,7 @@ namespace TranslatorWebserviceBank
             Console.WriteLine(e.BasicProperties.ReplyTo);
             //Console.WriteLine(e.BasicProperties.Headers["headerLanguage"]);
             //Console.WriteLine(e.BasicProperties.Headers["Language"]);
-            
+
             string[] translatedFormat = aTranslator.Translate(messageRecieved);
             SendToBankQueue(translatedFormat[0], translatedFormat[1], e);
 
@@ -68,16 +68,16 @@ namespace TranslatorWebserviceBank
             localhost.LoanService bank = new localhost.LoanService();
             string[] bankinfo = bankFormat.Split(':');
             //string response = "ssn: " + bankinfo[0].Trim(' ') + ", : 4.5";
-             bank.LoanRequest(bankinfo[0].Trim(' '), int.Parse(bankinfo[1].Trim(' ')), double.Parse(bankinfo[2].Trim(' ')), int.Parse(bankinfo[3].Trim(' ')));
+            string response = bank.LoanRequest(bankinfo[0].Trim(' '), int.Parse(bankinfo[1].Trim(' ')), double.Parse(bankinfo[2].Trim(' ')), int.Parse(bankinfo[3].Trim(' ')));
 
             var factory = new ConnectionFactory() { HostName = StaticHardcodedVariables.host_Name };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
 
-                channel.QueueDeclare(queue: e.BasicProperties.ReplyTo, durable: true,exclusive: false,autoDelete: false,arguments: null);
+                channel.QueueDeclare(queue: e.BasicProperties.ReplyTo, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
-               
+
                 //e.BasicProperties.Headers.Add("language", "string");
                 channel.BasicPublish(exchange: "" /*e.BasicProperties.ReplyTo*/, routingKey: e.BasicProperties.ReplyTo, basicProperties: e.BasicProperties, body: Encoding.UTF8.GetBytes(response));
                 //Console.WriteLine(" [x] Sent {0} with basicproperties : {1}", e.Body, e.BasicProperties.ToString());
