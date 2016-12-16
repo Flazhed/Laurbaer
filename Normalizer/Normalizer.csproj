@@ -54,7 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionFactoryBuilder.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Consumer.cs" />
     <Compile Include="LoanResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
