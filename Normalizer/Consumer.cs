@@ -37,10 +37,10 @@ namespace Normalizer
                                         XmlSerializer serializer = new XmlSerializer(typeof(LoanResponse));
                                         MemoryStream memStream = new MemoryStream(Encoding.UTF8.GetBytes(message));
                                         LoanResponse tempLR = (LoanResponse)serializer.Deserialize(memStream);
-                                        JObject resultingMessage = JObject.FromObject(tempLR);
+                                        messageJObject = JObject.FromObject(tempLR);
 
-                                        Console.WriteLine("Received: {0}", resultingMessage.ToString());
-                                        resultingMessage.Add("bankName", XMLBANK);
+                                        Console.WriteLine("Received: {0}", messageJObject.ToString());
+                                        messageJObject.Add("bankName", XMLBANK);
                                     }
                                     catch (Exception e)
                                     {
